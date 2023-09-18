@@ -1,9 +1,10 @@
-
+import React, { useState } from 'react';
 import './App.css';
 
-const App() = () => {
+const App = () => {
 
-  const [categories, setCatergories] = useState([hats, jackets, sneakers, womens, mens]);
+  const categoryList = ['hats', 'jackets', 'sneakers', 'mens', 'womens'];
+  const [categories, setCatergories] = useState(categoryList);
 
   return (
     <div className='categories-container'>
