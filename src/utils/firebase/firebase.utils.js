@@ -1,5 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInwithRedirect, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import {getFirestore, doc, getDoc, setDoc  } from 'firebase/firestore';
+// doc gets the doc, getdoc gets doc data, setdoc sets doc data
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,13 +16,49 @@ const firebaseConfig = {
   
   // Initialize Firebase
   const firebaseApp = initializeApp(firebaseConfig);
-
+  //initialize provider with google
   const provider = new GoogleAuthProvider();
-
+  //set login in paramaters
   provider.setCustomParameters({
     prompt: 'select_account'
 
   })
-
+  //create auth method (shouldn't change)
   export const auth = getAuth();
+  //create method that you leverage in the application to utilize auth functions
   export const signInwithGooglePopup = () => signInWithPopup(auth, provider);
+  //create db link
+  export const db = getFirestore();
+  
+  //create async call that stores login info
+  //take information we are getting from auth service and store in fs
+  
+  export const createUserDocumentFromAuth = async (userAuth) => {
+    
+    //doc method which is checking if document exists
+    //takes args database, collection name, and then document ID
+    //function will be passed user object, check for google UID
+    
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    
+    //snapshot uses get doc to see what data exists at the location pointed at by userdocref
+    
+    const userSnapshot = await getDoc(userDocRef);
+    
+    if(!userSnapshot.exists()) {
+        const { displayName, email } = userAuth;
+        const createdAt = Date();
+
+        try {
+            await setDoc(userDocRef, {
+                displayName,
+                email,
+                createdAt
+            });
+        } catch (error) {
+            alert(error);
+        }
+
+    }
+    return userDocRef;
+};
