@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInwithRedirect, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect} from 'firebase/auth';
 import {getFirestore, doc, getDoc, setDoc  } from 'firebase/firestore';
 // doc gets the doc, getdoc gets doc data, setdoc sets doc data
 
@@ -17,6 +17,7 @@ const firebaseConfig = {
   // Initialize Firebase
   const firebaseApp = initializeApp(firebaseConfig);
   //initialize provider with google
+  //you can have different providers ie discord, github, etc 
   const provider = new GoogleAuthProvider();
   //set login in paramaters
   provider.setCustomParameters({
@@ -27,7 +28,10 @@ const firebaseConfig = {
   export const auth = getAuth();
   //create method that you leverage in the application to utilize auth functions
   export const signInwithGooglePopup = () => signInWithPopup(auth, provider);
+  export const signInwithGoogleRedirect =  () =>  signInWithRedirect(auth, provider);
+ 
   //create db link
+ 
   export const db = getFirestore();
   
   //create async call that stores login info
