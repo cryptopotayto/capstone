@@ -1,0 +1,18 @@
+import './button.styles.scss'
+
+//control valve for differnt styling based on prop value passed
+const BUTTON_TYPES_CLASSES = {
+    google: 'google-sign-in',
+    inverted: 'inverted'
+}
+
+
+const Button = ({ children, buttonType, ...otherProps }) => {
+    return(
+        <button className={`button-container ${BUTTON_TYPES_CLASSES[buttonType]}`}>
+            {children}
+        </button>
+    );
+};
+
+export default Button;

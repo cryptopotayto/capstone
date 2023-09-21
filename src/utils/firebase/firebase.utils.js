@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect} from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect, createUserWithEmailAndPassword} from 'firebase/auth';
 import {getFirestore, doc, getDoc, setDoc  } from 'firebase/firestore';
 // doc gets the doc, getdoc gets doc data, setdoc sets doc data
 
@@ -37,8 +37,8 @@ const firebaseConfig = {
   //create async call that stores login info
   //take information we are getting from auth service and store in fs
   
-  export const createUserDocumentFromAuth = async (userAuth) => {
-    
+  export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) => {
+    if(!userAuth) return;
     //doc method which is checking if document exists
     //takes args database, collection name, and then document ID
     //function will be passed user object, check for google UID
@@ -57,7 +57,8 @@ const firebaseConfig = {
             await setDoc(userDocRef, {
                 displayName,
                 email,
-                createdAt
+                createdAt,
+                ...additionalInfo
             });
         } catch (error) {
             alert(error);
@@ -66,3 +67,8 @@ const firebaseConfig = {
     }
     return userDocRef;
 };
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    if(!email || !password) return;
+    return await createUserWithEmailAndPassword(auth, email, password);
+}
