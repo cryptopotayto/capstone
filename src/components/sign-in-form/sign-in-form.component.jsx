@@ -26,6 +26,8 @@ const SignIn = () => {
     };
 
     const signInwithGoogle = async () => {
+
+        console.log('submit');
         
         //destructuring response.user returned from sign in popup
         const {user} = await signInwithGooglePopup();
@@ -36,7 +38,7 @@ const SignIn = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         //check if user exists in db and credentials match
-        
+        console.log('handle submit');
         try {
             const { user } =  await signInAuthUserWithEmailAndPassword(email, password);
             setCurrentUser(user);
@@ -71,7 +73,7 @@ const SignIn = () => {
                 />
                 <FormInput
                     label='Password'
-                    type="text" 
+                    type="password" 
                     onChange={handleChange} 
                     name= 'password' 
                     value={password} 
