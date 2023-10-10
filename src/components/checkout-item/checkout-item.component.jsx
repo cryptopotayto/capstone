@@ -1,28 +1,29 @@
+import { CartContext } from "../../contexts/cart.context";
+import { useContext } from "react";
+import './checkout-item.styles.scss'
 
 
 const CheckoutItem = ({ cartItem }) => {
     const { imageUrl, price, name, quantity } = cartItem;
-  
+    const { addItemToCart, subtractItemFromCart, removeItemFromCart } = useContext(CartContext);
+
+    const lessHandler = (event) => {subtractItemFromCart(cartItem)};
+    const moreHandler = (event) => {addItemToCart(cartItem)};
+    const removeHandler = (event) => {removeItemFromCart(cartItem);}
     return (
-      <tr className='checkout-item-container'>
-        <td>
+      <div className="checkout-item-container">
+        <div className="image-container">
             <img src={imageUrl} alt={`${name}`} />
-        </td>
-        <td>
-            <span className='name'>{name}</span>
-        </td>
-        <td>
-            <span>&lt;</span>
-            <span> {quantity} </span>
-            <span>&gt;</span>
-        </td>
-        <td>
-        <span className='price'>{price}</span>
-        </td>
-        <td>
-            <span> X </span>
-        </td>
-      </tr>
+        </div>
+        <span className="name">{name}</span>
+        <span className="quantity">
+            <div onClick={lessHandler} className="arrow">&#10094;</div>
+            <span className="value">{quantity}</span>
+            <div onClick={moreHandler} className="arrow">&#10095;</div>
+        </span>
+        <span className="price">{price}</span>
+        <span onClick={removeHandler} className="remove-button">&#10005;</span>
+      </div>
     );
   };
 
