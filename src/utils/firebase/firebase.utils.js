@@ -10,7 +10,14 @@ import {
     onAuthStateChanged,
 
 } from 'firebase/auth';
-import {getFirestore, doc, getDoc, setDoc  } from 'firebase/firestore';
+import {getFirestore,
+        doc,
+        getDoc,
+        setDoc, 
+        collection, 
+        writeBatch,
+        query,
+        getDocs, } from 'firebase/firestore';
 // doc gets the doc, getdoc gets doc data, setdoc sets doc data
 
 
@@ -43,7 +50,65 @@ const firebaseConfig = {
   //create db link
  
   export const db = getFirestore();
-  
+
+  //create one-time call to upload category data from front end
+
+  export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    //locate the folder within the database using collectionKey
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+    //for each object
+    objectsToAdd.forEach((object) => {
+        //locate the file within each folder using the title
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        //set the data on that page equal to the value of the object
+        batch.set(docRef, object);
+        console.log('done');
+    });
+
+    await batch.commit();
+  };
+
+  export const getCategoriesAndDocuments = async () => {
+    //step one, get the collection reference (pointing at the correct folder)
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    //snapshot is just checking to see what data exists at a ref point and
+    //flashes back a exact copy at the moment it is created
+    //think, polaroid picture of the db
+
+    const querySnapshot = await getDocs(q);
+    //creates an array of all individual and snapshots inside
+
+    //honestly I don't have a fucking clue the finer mechanics of this
+    //at this point I'm just following the docs
+    //this method is going to suck up the data from the snapshots and create
+    //objects in a structure that I want and is functional to read on the FE
+    //its stupid and convuluted but at least its centralized
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const { title, items } = docSnapshot.data(); 
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {});
+
+    return categoryMap;
+  };
+
+  /*
+  object structure 
+  {
+    categoryTitleInDB: {
+        title: refTitle,
+        items: [
+            {},
+            {},
+            {}
+        ]
+    }
+  }
+  */
+
   //create async call that stores login info
   //take information we are getting from auth service and store in fs
   
@@ -95,3 +160,5 @@ export const signOutUser = async () => signOut(auth);
 export const onAuthStateChangedListener = (callback) => 
     
     onAuthStateChanged(auth, callback);
+
+
