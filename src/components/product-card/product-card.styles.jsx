@@ -1,4 +1,7 @@
-.product-card-container {
+import styled from "styled-components";
+import { InvertedButton } from "../button/button.styles";
+
+export const ProductCardContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -14,7 +17,7 @@
     overflow: auto;
   }
 
-  button {
+  ${InvertedButton} {
     width: 80%;
     opacity: 0.7;
     position: absolute;
@@ -27,26 +30,28 @@
       opacity: 0.8;
     }
 
-    button {
+    ${InvertedButton}{
       opacity: 0.85;
       display: flex;
     }
   }
+`;
 
-  .footer {
+export const Footer = styled.div`
     width: 100%;
     height: 5%;
     display: flex;
     justify-content: space-between;
     font-size: 18px;
+`;
 
-    .name {
+export const CardName = styled.span`
       width: 90%;
       margin-bottom: 15px;
-    }
+`;
 
-    .price {
+export const CardPrice = styled.span`
       width: 10%;
-    }
-  }
-}
+`;
+
+
