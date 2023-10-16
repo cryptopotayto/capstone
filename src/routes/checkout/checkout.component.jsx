@@ -12,12 +12,12 @@ import {
 } from './checkout.styles.jsx';
 
 const Checkout = () => {
-  const { setIsCartOpen } = useContext(CartContext);
+  // const { setIsCartOpen } = useContext(CartContext);
   
-  useEffect(()=> {
-    const closeCart = () => setIsCartOpen(false);
-    closeCart();
-  });
+  // useEffect(()=> {
+  //   const closeCart = () => setIsCartOpen(false);
+  //   closeCart();
+  // });
 
   const { cartItems, cartTotal } = useContext(CartContext);
 
