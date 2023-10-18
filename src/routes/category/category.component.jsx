@@ -1,12 +1,13 @@
 import { useParams } from "react-router";
-import { useContext, useState, useEffect, Fragment } from "react";
-import { CategoriesContext } from "../../contexts/categories.context";
+import { useState, useEffect, Fragment } from "react";
 import ProductCard from "../../components/product-card/product-card.component";
 import {CategoryContainer, CategoryTitle} from './category.styles.jsx';
+import { useSelector } from "react-redux";
+import { selectCategoriesMap } from "../../store/categories/categories.selector";
 
 const Category = () => {
     const { category } = useParams();
-    const { categoriesMap } = useContext(CategoriesContext);
+    const categoriesMap = useSelector(selectCategoriesMap);
     //since component is waiting for async call of categories map when mount
     //can set inital state value to the category at map since data is available
 

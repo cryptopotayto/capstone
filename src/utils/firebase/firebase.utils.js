@@ -86,13 +86,11 @@ const firebaseConfig = {
     //this method is going to suck up the data from the snapshots and create
     //objects in a structure that I want and is functional to read on the FE
     //its stupid and convuluted but at least its centralized
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-        const { title, items } = docSnapshot.data(); 
-        acc[title.toLowerCase()] = items;
-        return acc;
-    }, {});
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+    //old category map reduction .. migrated to selector
 
-    return categoryMap;
+
+//     return categoryMap;
   };
 
   /*

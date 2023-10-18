@@ -3,7 +3,7 @@ import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
 
 //whenever you dispatch an action, it hits middleware before reducerrs
-const middleWares = [logger]
+const middleWares = [logger];
 //middlewares enhance the store
 const composedEnhaners = compose(applyMiddleware(...middleWares));
 
