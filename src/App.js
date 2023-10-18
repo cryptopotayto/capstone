@@ -8,7 +8,6 @@ import Checkout from './routes/checkout/checkout.component';
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
 import { setCurrentUser } from './store/user/user.action';
 import { useDispatch } from 'react-redux';
-
 const App = () => {
   const dispatch = useDispatch();
 
