@@ -3,7 +3,7 @@ import CheckoutItem from '../../components/checkout-item/checkout-item.component
 import { useSelector } from 'react-redux';
 import { selectCartItems, selectCartTotal, selectIsCartOpen } from '../../store/cart/cart.selector';
 import { useDispatch } from 'react-redux';
-import { setIsCartOpen } from '../../store/cart/cart.action';
+import { setIsCartOpen } from '../../store/cart/cart.reducer';
 import {
   CheckoutContainer,
   CheckoutHeader,
@@ -14,14 +14,13 @@ import {
 const Checkout = () => {
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
-  const isCartOpen = useSelector(selectIsCartOpen);
   const dispatch = useDispatch();
   
   useEffect(()=>{
     const toggleIsCartOpen = () =>
-     dispatch(setIsCartOpen(!isCartOpen));
+     dispatch(setIsCartOpen(false));
      toggleIsCartOpen();
-  },[]);
+  },[dispatch]);
 
   return (
     <CheckoutContainer>
