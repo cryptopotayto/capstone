@@ -5,6 +5,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
 import { rootReducer } from './root-reducer';
+import { persistReducer, persistStore } from 'redux-persist';
+
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['user'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleWares = [process.env.NODE_ENV === 'development' && logger].filter(
   Boolean
@@ -27,9 +38,9 @@ const middleWares = [process.env.NODE_ENV === 'development' && logger].filter(
 // const composedEnhancers = composeEnhancer(applyMiddleware(...middleWares));
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(middleWares),
 });
 
-// export const persistor = persistStore(store);
+export const persistor = persistStore(store);
