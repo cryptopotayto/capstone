@@ -10,17 +10,25 @@ const PaymentForm = () => {
 
     const paymentHandler = async (e) => {
         e.preventDefault();
-        //don't proceed if stripe isnt hooked in
-        if(!stripe || !elements){
+        if(!stripe || !elements) {
             return;
         }
-        
-
+        const response = await fetch('/.netlify/functions/create-payment-intent', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: 10000 }),
+        }).then((res) => {
+            return res.json();
+        });
+        console.log(response);
     }
-    
+
+
     return(
         <PaymentFormContainer>
-            <PFContainer>
+            <PFContainer onSubmit={paymentHandler}>
                 <h2>CREDIT CARD PAYMENT: </h2>
                 <CardElement />
                 <Button buttonType={BUTTON_TYPE_CLASSES.inverted}>PAY NOW</Button>
